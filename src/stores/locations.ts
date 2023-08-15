@@ -2,11 +2,23 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useLocationsStore = defineStore('locations', () => {
-	const count = ref(0)
-	const doubleCount = computed(() => count.value * 2)
-	function increment() {
-		count.value++
+	const weatherLocations = ref<any[]>([])
+
+	const addLocation = (location: any) => {
+		const exists = weatherLocations.value.find((loc) => loc.id === location.id)
+
+		if (exists) return
+
+		weatherLocations.value.push(location)
 	}
 
-	return { count, doubleCount, increment }
+	const newLocationOrder = (newOrder: any[]) => {
+		console.log(newOrder, 'newOrder')
+
+		weatherLocations.value = newOrder
+	}
+
+	// const doubleCount = computed(() => count.value * 2)
+
+	return { weatherLocations, addLocation, newLocationOrder }
 })

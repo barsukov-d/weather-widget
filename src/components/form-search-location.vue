@@ -1,32 +1,24 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { matArrowForward } from '@quasar/extras/material-icons'
-import { useLocations } from '@/hooks/useLocationsCoordinates'
 
 const emit = defineEmits<{
-	(e: 'search-result', locations: any): void
+	(e: 'location-name', locations: any): void
 }>()
 
-const { locations, fetchLocations } = useLocations()
 const locationName = ref('')
 
-watch(
-	() => locations.value,
-	() => {
-		emit('search-result', locations.value)
-	}
-)
+const onSubmit = () => {
+	emit('location-name', locationName.value)
+
+	locationName.value = ''
+}
 </script>
 
 <template>
-	<form class="search-form">
+	<form class="search-form" @submit.prevent="onSubmit()">
 		<q-input filled v-model="locationName" label="Add location" />
-		<q-btn
-			@click="fetchLocations(locationName)"
-			square
-			color="primary"
-			:icon="matArrowForward"
-		/>
+		<q-btn @click="onSubmit()" square color="primary" :icon="matArrowForward" />
 	</form>
 </template>
 
@@ -49,6 +41,10 @@ watch(
 			display: block;
 			border: 1px solid $primary;
 		}
+	}
+
+	.q-btn {
+		height: 3.5rem;
 	}
 }
 </style>

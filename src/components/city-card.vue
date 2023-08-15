@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps({
-	city: {
+	location: {
 		type: Object,
 		required: true
 	}
@@ -8,11 +8,23 @@ defineProps({
 </script>
 
 <template>
-	<div>
-		<h2>{{ city.name }}</h2>
-		<p>Temperature: {{ city.temperature }}°C</p>
-		<p>Weather: {{ city.weather }}</p>
-	</div>
+	<q-card flat bordered class="my-card">
+		<q-card-section>
+			<div class="text-h6">{{ location.name }}</div>
+		</q-card-section>
+
+		<!-- <q-card-section class="q-pt-none">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+			incididunt ut labore et dolore magna aliqua.
+		</q-card-section> -->
+
+		<!-- <q-separator inset /> -->
+
+		<!-- <q-card-section>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+			incididunt ut labore et dolore magna aliqua.
+		</q-card-section> -->
+	</q-card>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

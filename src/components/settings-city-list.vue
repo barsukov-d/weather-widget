@@ -1,40 +1,41 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { matMenu, matClose } from '@quasar/extras/material-icons'
+import { watch, onMounted, ref } from 'vue'
+import { matMenu } from '@quasar/extras/material-icons'
 import draggable from 'vuedraggable'
 
-const cityList = ref([
-	{
-		name: 'London',
-		temperature: 15,
-		weather: 'Cloudy'
+const props = defineProps<{
+	locationsNames: any
+}>()
+
+const emit = defineEmits<{
+	(e: 'new-order-locations-names-list', loc: any): void
+}>()
+
+const locationsNamesList = ref<any[]>([])
+
+onMounted(() => {
+	locationsNamesList.value = props.locationsNames
+})
+
+watch(
+	() => locationsNamesList.value,
+	(newValue) => {
+		console.log(newValue, 'new-order-locations-names-list')
+
+		emit('new-order-locations-names-list', newValue)
 	},
-	{
-		name: 'Moscow',
-		temperature: 20,
-		weather: 'Sunny'
-	},
-	{
-		name: 'New York',
-		temperature: 25,
-		weather: 'Sunny'
-	},
-	{
-		name: 'Paris',
-		temperature: 10,
-		weather: 'Rainy'
-	}
-])
+	{ deep: true }
+)
 
 const drag = ref<boolean>(false)
 
 const removeAt = (index: number) => {
-	cityList.value.splice(index, 1)
+	locationsNamesList.value = locationsNamesList.value.filter((item) => item.id !== index)
 }
 </script>
 <template>
 	<draggable
-		v-model="cityList"
+		v-model="locationsNamesList"
 		tag="ul"
 		group="meals"
 		handle=".handle"

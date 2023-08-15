@@ -7,17 +7,41 @@ export const locationsService = {
 				`/geo/1.0/direct?q=${locationName}&limit=5&appid=0c776580506fda1007e4584575cfaea2`
 			)
 
-			const result: any[] = []
+			const result = {
+				status: 0,
+				data: [] as any
+			}
 
-			response.data.map((location: any) => {
-				result.push({
-					name: location.name,
-					lat: location.lat,
-					lon: location.lon
+			if (response.data.length > 0) {
+				result.status = 1
+				response.data.map((location: any) => {
+					result.data.push({
+						name: location.name,
+						country: location.country,
+						lat: location.lat,
+						lon: location.lon
+					})
 				})
-			})
+			}
+
+			if (response.data.length === 0) {
+				result.status = 0
+			}
 
 			return result
+		} catch (error: unknown) {
+			throw new Error()
+		}
+	},
+
+	getLocationByCoordinates: async (lat: number, lon: number) => {
+		try {
+			const response = await api.get(
+				// `/geo/1.0/direct?q=${locationName}&limit=5&appid=0c776580506fda1007e4584575cfaea2`
+				`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=0c776580506fda1007e4584575cfaea2`
+			)
+
+			return response
 		} catch (error: unknown) {
 			throw new Error()
 		}
